@@ -14,7 +14,7 @@ with open('/data/p-one/dghuman/simulation/MCEq_tables/rate_muon_table_dtheta_10.
 #with open('/data/p-one/dghuman/simulation/MCEq_tables/live_time_zenith.pkl', 'rb') as input3:
 #    livetime = pickle.load(input3)
 
-with open('/data/p-one/dghuman/simulation/MCEq_tables/UofA_tables/fluxtable_as_list.pkl', 'rb') as input4:
+with open('/data/p-one/dghuman/simulation/MCEq_tables/UofA_tables/fluxtable_as_list_1460.pkl', 'rb') as input4:
     uofa_table = pickle.load(input4)
 
 with open('/data/p-one/dghuman/simulation/MCEq_tables/new_muon_dict.pkl', 'rb') as input5:
@@ -46,7 +46,6 @@ colors = list(start.range_to(end, len(l)))
 l3 = [x for x in uofa_table.keys() if not isinstance(x,str)]
 
 plt.figure(figsize=(4.2, 3))
-'''
 
 for key in l:
     plt.loglog(e_grid, table[key], color=str(colors[l.index(key)].hex), ls='-', lw=1.5, label=r'$\theta =$ ' + str(key))
@@ -79,7 +78,7 @@ plt.xlim(10,1e10)
 plt.ylim(1e-17,10)
     
 plt.savefig('/data/p-one/dghuman/simulation/MCEq_tables/test_plots/E_vs_Rate_zenith.png', dpi=300)
-'''
+
 plt.clf()
 
 n, bins, patches = plt.hist(x=np.array(full_muon_info['Energy']), bins=np.array(e_grid), alpha=1.0, edgecolor='black', linestyle='solid', histtype='step', label='raw')

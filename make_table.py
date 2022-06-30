@@ -99,7 +99,11 @@ for theta in np.arange(0, 90, dtheta):
     flux[theta] = mu_total
 
 e_grid = mceq_water.e_grid
+e_widths = mceq_water.e_widths
+e_bins = mceq_water.e_bins
 flux['e_grid'] = e_grid
+flux['e_widths'] = e_widths
+flux['e_bins'] = e_bins
 flux['depths'] = depths
 print("Writing to /data/p-one/dghuman/simulation/MCEq_tables/muon_table_dtheta_" + str(dtheta) + ".pkl")
 save_object(flux, "/data/p-one/dghuman/simulation/MCEq_tables/muon_table_dtheta_" + str(dtheta) + ".pkl")

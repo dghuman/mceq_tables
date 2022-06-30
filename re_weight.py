@@ -84,7 +84,7 @@ def main():
 
     sorted_mintimes = np.sort(min_times[non_zero])
     #min_mintimes = sorted_mintimes[0]
-    min_mintimes = sorted_mintimes[2]    # can change to manually increase livetime and reduce number of computations (don't change elsewhere as this should follow through!)
+    min_mintimes = sorted_mintimes[3]    # can change to manually increase livetime and reduce number of computations (don't change elsewhere as this should follow through!)
     logging.info(f'minimum time is {min_mintimes}')
     logging.info(f'Sorted livetimes: {sorted_mintimes}')        
     min_times[zero_ind] = 1

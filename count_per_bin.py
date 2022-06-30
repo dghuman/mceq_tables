@@ -28,7 +28,10 @@ def find_closest(arr, val):
 
 theta_bin_diff = 10    
 e_grid = rate['e_grid']
+e_bins = rate['e_bins']
+e_widths = rate['e_widths']
 e_diff = e_grid[1:] - e_grid[:-1]
+
 mute_e_grid = mute_rate['e_grid']
 bin_thetas = [x for x in rate.keys() if not isinstance(x, str)]
 live_time = np.zeros(len(bin_thetas))
@@ -55,9 +58,17 @@ new_dict['e_grid'] = e_grid
 new_dict['e_bin_width'] = []
 
 
-
 run_time = 0
 mute_run_time = 0
+
+'''
+    if energy_ == 0:
+        energy_bin_width = e_grid[energy_+1] - e_grid[energy_]
+    elif energy_ == len(muon_Energy)-1:
+        energy_bin_width = e_grid[energy_] - e_grid[energy_-1]
+    else:
+        energy_bin_width = (e_grid[energy_+1] - e_grid[energy_-1])/2
+'''
 
 
 for i in range(len(muon_Energy)):
@@ -66,22 +77,18 @@ for i in range(len(muon_Energy)):
     energy_ = find_closest(e_grid, muon_Energy[i])
     mute_energy_ = find_closest(mute_e_grid, muon_Energy[i])
     rate_ = rate[theta_][energy_]
-    mute_rate_ = mute_rate[theta_][energy_]
-    if energy_ == 0:
-        energy_bin_width = e_grid[energy_+1] - e_grid[energy_]
-    elif energy_ == len(muon_Energy)-1:
-        energy_bin_width = e_grid[energy_] - e_grid[energy_-1]
-    else:
-        energy_bin_width = (e_grid[energy_+1] - e_grid[energy_-1])/2
+    mute_rate_ = mute_rate[theta_][mute_energy_]
+    energy_bin_width = e_widths[energy_]
     if rate_ < 1E-17:
-        time_ = 0
+        #time_ = 0
         zeros.append(muon_Energy[i])
     else:
         time_ = 1/(energy_bin_width*rate_) #1/(muon_Energy[i]*rate_)
-    if mute_rate_ < 1E-10:
+    if mute_rate_ < 1E-17:
         mute_time_ = 0
     else:
-        mute_time_ = 1/(muon_Energy[i]*mute_rate_)
+        mute_time_ = 1/(energy_bin_width*mute_rate_) #(muon_Energy[i]*mute_rate_)
+    time_ = mute_time_                                             # <-----------Remove this if not using mute result
     run_time += time_
     mute_run_time += mute_time_
     new_dict['e_bin_width'].append(energy_bin_width)

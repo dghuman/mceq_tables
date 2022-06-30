@@ -15,7 +15,7 @@ import crflux.models as pm
 with open('/data/p-one/dghuman/simulation/MCEq_tables/muon_table_dtheta_10.pkl', 'rb') as input:
     table = pickle.load(input)
 
-with open('/data/p-one/dghuman/simulation/MCEq_tables/UofA_tables/fluxtable_as_list.pkl', 'rb') as input4:
+with open('/data/p-one/dghuman/simulation/MCEq_tables/UofA_tables/fluxtable_as_list_1460.pkl', 'rb') as input4:
     uofa_table = pickle.load(input4)
 
 # Save file function using pickle
@@ -38,12 +38,14 @@ l = [x for x in table.keys() if not isinstance(x, str)]
 thetas = np.array(l)*np.pi/180
 
 for key in l:
-    area_ = Area(240E2, key*np.pi/180.) #in cm2
+    area_ = Area(100E2, key*np.pi/180.) #in cm2
     solidangle_ = SolidAngle(key*np.pi/180., 10*np.pi/180.)
     rate_table[key] = area_*solidangle_*np.array(table[key])
     uofa_rate_table[key] = area_*solidangle_*np.array(uofa_table[key])
 
 rate_table['e_grid'] = e_grid
+rate_table['e_bins'] = table['e_bins']
+rate_table['e_widths'] = table['e_widths']
 uofa_rate_table['e_grid'] = uofa_e_grid
 
 save_object(rate_table, "/data/p-one/dghuman/simulation/MCEq_tables/rate_muon_table_dtheta_10.pkl")
