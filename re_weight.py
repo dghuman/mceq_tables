@@ -26,6 +26,7 @@ def main():
 
     data = {}
     min_times = []
+    count = 0
 
     for theta_i in range(10):
         indices = np.where(theta_bins == theta_i)[0]
@@ -38,7 +39,7 @@ def main():
             min_times.append(0)
             continue
         
-        hist_E, bin_edges_E = np.histogram(e_bins[indices], bins=len(e_grid))
+        hist_E, bin_edges_E = np.histogram(e_bins[indices], bins=range(len(e_grid)))
         live_time_hist = []
         E_index = []
         min_time = 0
@@ -47,6 +48,8 @@ def main():
         
         for index, val in enumerate(hist_E):
             i_val = np.where(e_bins[indices]==index)[0]
+            if len(i_val) != val:
+                count += 1
             if len(i_val) == 0:
                 live_time_hist.append(-1)
                 E_index.append(index)
@@ -63,7 +66,7 @@ def main():
                 min_time = tscale*val
         
         logging.info(f'Livetime per energy bin = {live_time_hist}')
-        
+        #min_time = 1496.9781737661062 # TEMPORARY CHECK
         e_weight = min_time/np.array(live_time_hist)
         e_weight[np.where(np.array(live_time_hist) < 0)] = 0
         min_times.append(min_time)
@@ -84,7 +87,7 @@ def main():
 
     sorted_mintimes = np.sort(min_times[non_zero])
     #min_mintimes = sorted_mintimes[0]
-    min_mintimes = sorted_mintimes[3]    # can change to manually increase livetime and reduce number of computations (don't change elsewhere as this should follow through!)
+    min_mintimes = sorted_mintimes[2] #1496.9781737661062 #    # can change to manually increase livetime and reduce number of computations (don't change elsewhere as this should follow through!)
     logging.info(f'minimum time is {min_mintimes}')
     logging.info(f'Sorted livetimes: {sorted_mintimes}')        
     min_times[zero_ind] = 1
@@ -95,6 +98,7 @@ def main():
     data['full_weight'] = np.zeros(len(theta))
     data['min_mintimes'] = min_mintimes
     data['angle_weight'] = angle_weight[:-1]
+    logging.info(f'Count is {count}')
 
     for j in range(9):
         e_weight = np.array(data[j]['e_weight'])

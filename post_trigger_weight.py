@@ -21,7 +21,7 @@ def main():
     with open('/data/p-one/dghuman/simulation/MCEq_tables/new_muon_dict.pkl', 'rb') as input1:
         e_dict = pickle.load(input1)
 
-    with open('/data/p-one/dghuman/simulation/MCEq_tables/muon_dict_0006_triggered.pkl', 'rb') as input2:
+    with open('/data/p-one/dghuman/simulation/MCEq_tables/muon_dict_0006_triggered_6string_6hit.pkl', 'rb') as input2:
         muon_dict = pickle.load(input2)
 
     with open('/data/p-one/dghuman/simulation/MCEq_tables/muon_weights.pkl', 'rb') as input3:
@@ -51,7 +51,7 @@ def main():
     data['e_bins'] = e_bins
     data['weights'] = weights
     
-    save_object(data, '/data/p-one/dghuman/simulation/MCEq_tables/triggered_muon_weights.pkl')
+    save_object(data, '/data/p-one/dghuman/simulation/MCEq_tables/triggered_muon_weights_6string_6hit.pkl')
 
 if __name__ == '__main__':
     main()

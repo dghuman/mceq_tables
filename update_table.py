@@ -38,7 +38,7 @@ l = [x for x in table.keys() if not isinstance(x, str)]
 thetas = np.array(l)*np.pi/180
 
 for key in l:
-    area_ = Area(100E2, key*np.pi/180.) #in cm2
+    area_ = Area(700E2, key*np.pi/180.) #in cm2 
     solidangle_ = SolidAngle(key*np.pi/180., 10*np.pi/180.)
     rate_table[key] = area_*solidangle_*np.array(table[key])
     uofa_rate_table[key] = area_*solidangle_*np.array(uofa_table[key])

@@ -79,13 +79,13 @@ for i in range(len(muon_Energy)):
     rate_ = rate[theta_][energy_]
     mute_rate_ = mute_rate[theta_][mute_energy_]
     energy_bin_width = e_widths[energy_]
-    if rate_ < 1E-17:
-        #time_ = 0
-        zeros.append(muon_Energy[i])
+    if rate_ < 1E-35:
+        time_ = 0        
     else:
         time_ = 1/(energy_bin_width*rate_) #1/(muon_Energy[i]*rate_)
-    if mute_rate_ < 1E-17:
+    if mute_rate_ < 1E-35:
         mute_time_ = 0
+        zeros.append([muon_Energy[i],muon_thetas[i]])        
     else:
         mute_time_ = 1/(energy_bin_width*mute_rate_) #(muon_Energy[i]*mute_rate_)
     time_ = mute_time_                                             # <-----------Remove this if not using mute result

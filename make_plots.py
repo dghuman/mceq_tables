@@ -22,14 +22,29 @@ with open('/data/p-one/dghuman/simulation/MCEq_tables/new_muon_dict.pkl', 'rb') 
 
 with open('/data/p-one/dghuman/simulation/MCEq_tables/muon_weights.pkl', 'rb') as input6:
     muon_weights = pickle.load(input6)
-
+    
 with open('/data/p-one/dghuman/simulation/MCEq_tables/muon_dict_0006.pkl', 'rb') as input7:
     muon_dict = pickle.load(input7)
+
+with open('/data/p-one/dghuman/simulation/MCEq_tables/muon_dict_0006_6string_ATM.pkl', 'rb') as input71:
+    muon_dict_6string_ATM = pickle.load(input71)
 
 with open('/data/p-one/dghuman/simulation/MCEq_tables/muon_dict_0006_triggered.pkl', 'rb') as input8:    
     muon_dict_trig = pickle.load(input8)
 
-with open('/data/p-one/dghuman/simulation/MCEq_tables/triggered_muon_weights.pkl', 'rb') as input9:
+#with open('/data/p-one/dghuman/simulation/MCEq_tables/muon_dict_0006_triggered_5string.pkl', 'rb') as input82:    
+#    muon_dict_trig_5string = pickle.load(input82)
+
+with open('/data/p-one/dghuman/simulation/MCEq_tables/muon_dict_0006_triggered_6string.pkl', 'rb') as input83:    
+    muon_dict_trig_6string = pickle.load(input83)
+
+with open('/data/p-one/dghuman/simulation/MCEq_tables/muon_dict_0006_triggered_6string_6hit.pkl', 'rb') as input84:
+    muon_dict_trig_6string_6hit = pickle.load(input84)
+
+with open('/data/p-one/dghuman/simulation/MCEq_tables/muon_dict_0006_triggered_6string_ATM.pkl', 'rb') as input85:
+    muon_dict_trig_6string_ATM = pickle.load(input85)
+    
+with open('/data/p-one/dghuman/simulation/MCEq_tables/triggered_muon_weights_6string_6hit.pkl', 'rb') as input9:
     muon_weights_trig = pickle.load(input9)
     
 e_grid = table['e_grid']
@@ -213,8 +228,10 @@ plt.savefig('/data/p-one/dghuman/simulation/MCEq_tables/test_plots/E_vs_weight.p
 
 plt.clf()
 
-n, bins, patches = plt.hist(x=np.array(muon_dict['Energy']), bins=e_grid, label=r"Untriggered", alpha=1.0, edgecolor='black', linestyle='solid', histtype='step')
-n2, bins2, patches2 = plt.hist(x=np.array(muon_dict_trig['Energy']), bins=e_grid, label=r"triggered", alpha=1.0, edgecolor='red', linestyle='dashed', histtype='step')
+n32, bins32, patches32 = plt.hist(x=np.array(muon_dict_trig_6string_6hit['Energy']), bins=e_grid, label=r"Triggered", alpha=0.5, edgecolor='black', linestyle='solid', histtype='step')#, weights=muon_weights_trig['weights'])
+n31, bins31, patches31 = plt.hist(x=np.array(muon_dict['Energy']), bins=e_grid, label=r"Untriggered", alpha=0.5, edgecolor='blue', linestyle='dashed', histtype='step')#, weights=muon_weights['full_weight'])
+n4, bins4, patches4 = plt.hist(x=np.array(muon_dict_trig_6string_ATM['Energy']), bins=e_grid, label=r"Triggered ATM", alpha=0.5, edgecolor='orange', linestyle='solid', histtype='step')
+n41, bins41, patches41 = plt.hist(x=np.array(muon_dict_6string_ATM['Energy']), bins=e_grid, label=r"Untriggered ATM", alpha=0.5, edgecolor='red', linestyle='dashed', histtype='step')
 plt.yscale('log')
 plt.ylabel(r"Count")
 plt.xlabel(r"Energy")
@@ -227,9 +244,83 @@ plt.grid(True)
 plt.savefig('/data/p-one/dghuman/simulation/MCEq_tables/test_plots/E-dist.png', dpi=300)
 
 plt.clf()
+
+n32, bins32, patches32 = plt.hist(x=np.array(muon_dict_trig_6string_6hit['Energy']), bins=e_grid, label=r"Triggered", alpha=0.5, edgecolor='black', linestyle='solid', histtype='step', weights=muon_weights_trig['weights'])
+n31, bins31, patches31 = plt.hist(x=np.array(muon_dict['Energy']), bins=e_grid, label=r"Untriggered", alpha=0.5, edgecolor='blue', linestyle='dashed', histtype='step', weights=muon_weights['full_weight'])
+n4, bins4, patches4 = plt.hist(x=np.array(muon_dict_trig_6string_ATM['Energy']), bins=e_grid, label=r"Triggered ATM", alpha=0.5, edgecolor='orange', linestyle='solid', histtype='step')
+n41, bins41, patches41 = plt.hist(x=np.array(muon_dict_6string_ATM['Energy']), bins=e_grid, label=r"Untriggered ATM", alpha=0.5, edgecolor='red', linestyle='dashed', histtype='step')
+plt.yscale('log')
+plt.ylabel(r"Count")
+plt.xlabel(r"Energy")
+plt.xscale('log')
+plt.title(r"Energy distribution")
+plt.legend(loc='best',frameon=False,numpoints=1,fontsize='medium')
+plt.tight_layout()
+plt.grid(True)
+
+plt.savefig('/data/p-one/dghuman/simulation/MCEq_tables/test_plots/weighted_E-dist.png', dpi=300)
+
+plt.clf()
+
+hist_mu_w, bin_mu_w = np.histogram(np.array(muon_dict['Energy']), bins=e_grid, weights=muon_weights['full_weight'])
+hist_mu, bin_mu = np.histogram(np.array(muon_dict_6string_ATM['Energy']), bins=e_grid)
+hist_mu_trig, bin_mu_trig = np.histogram(np.array(muon_dict_trig_6string_ATM['Energy']), bins=e_grid)
+hist_mu_trig_w, bin_mu_trig_w = np.histogram(np.array(muon_dict_trig_6string_6hit['Energy']), bins=e_grid, weights=muon_weights_trig['weights'])
+hist_mu_trig_unw, bin_mu_trig_unw = np.histogram(np.array(muon_dict_trig_6string_6hit['Energy']), bins=e_grid)
+
+hist_mu_rel = hist_mu_w/hist_mu
+hist_mu_trig_rel_w = hist_mu_trig_w/hist_mu_trig
+hist_mu_trig_rel = hist_mu_trig_unw/hist_mu_trig
+
+fig, axs = plt.subplots(2, sharex=True)
+fig.suptitle(r'Relative Muon Generation')
+
+axs[0].hist(x=np.array(muon_dict['Energy']), bins=e_grid, label=r"Untriggered", color='black', linestyle='dashed', histtype='step', weights=muon_weights['full_weight'])
+axs[0].hist(x=np.array(muon_dict_6string_ATM['Energy']), bins=e_grid, label=r"Untriggered ATM", color='cyan', linestyle='dashed', histtype='step')
+axs[1].plot(e_grid[:-1], hist_mu_rel, label=r"$\mu/\mu_{\text{atm}}$", color='black', linestyle='solid')
+#axs[1].hist(hist_mu_rel, bins='auto', label=r'Scale Projection', color='black', alpha=0.5, linestyle='solid', histtype='bar', orientation='horizontal')
+axs[0].set_yscale('log')
+axs[0].set_ylabel(r'Count')
+axs[1].set_ylabel(r'Relative count')
+plt.xlabel(r'Energy')
+axs[0].set_xscale('log')
+axs[1].set_xscale('log')
+axs[0].legend()
+plt.xlim((0, 1e5))
+plt.tight_layout()
+plt.savefig('/data/p-one/dghuman/simulation/MCEq_tables/test_plots/relative-plot_untrig.png', dpi=300)
+
+plt.clf()
+
+fig, axs = plt.subplots(2, sharex=True)
+fig.suptitle(r'Relative Muon Generation')
+
+axs[0].hist(x=np.array(muon_dict_trig_6string_ATM['Energy']), bins=e_grid, label=r"ATM Triggered", color='black', linestyle='solid', histtype='step')
+axs[0].hist(x=np.array(muon_dict_trig_6string_6hit['Energy']), bins=e_grid, label=r"Triggered", color='red', linestyle='dashed', histtype='step', alpha=0.5)
+axs[0].hist(x=np.array(muon_dict_trig_6string_6hit['Energy']), bins=e_grid, label=r"Triggered Weighted", color='blue', linestyle='dashed', histtype='step', alpha=0.5, weights=muon_weights_trig['weights'])
+#axs[1].hist(hist_mu_trig_rel, bins='auto', label=r'unweighted', color='red', alpha=0.3, linestyle='solid', histtype='stepfilled', orientation='horizontal')
+#axs[1].hist(hist_mu_trig_rel_w, bins='auto', label=r'weighted', color='blue', alpha=0.3, linestyle='solid', histtype='stepfilled', orientation='horizontal')
+axs[1].plot(e_grid[:-1], hist_mu_trig_rel, label=r"$\mu/\mu_{\text{atm}}$", color='red', linestyle='solid', alpha=0.5)
+axs[1].plot(e_grid[:-1], hist_mu_trig_rel_w, label=r"Weighted $\mu/\mu_{\text{atm}}$", color='blue', linestyle='solid', alpha=0.5)
+axs[0].set_yscale('log')
+axs[0].set_ylabel(r'Count')
+axs[1].set_ylabel(r'Relative count')
+plt.xlabel(r'Energy')
+axs[0].set_xscale('log')
+axs[1].set_xscale('log')
+axs[0].legend()
+plt.xlim((10, 1e5))
+plt.tight_layout()
+plt.savefig('/data/p-one/dghuman/simulation/MCEq_tables/test_plots/relative-plot_trig.png', dpi=300)
+
+
+plt.clf()
 zbins = np.linspace(0, 1, 100)
 n, bins, patches = plt.hist(x=np.cos(np.array(muon_dict['theta'])*np.pi/180), bins=zbins, label=r"Untriggered", alpha=1.0, edgecolor='black', linestyle='solid', histtype='step')
-n2, bins2, patches2 = plt.hist(x=np.cos(np.array(muon_dict_trig['theta'])*np.pi/180), bins=zbins, label=r"triggered", alpha=1.0, edgecolor='red', linestyle='dashed', histtype='step')
+n2, bins2, patches2 = plt.hist(x=np.cos(np.array(muon_dict_trig['theta'])*np.pi/180), bins=zbins, label=r"old triggered", alpha=1.0, edgecolor='red', linestyle='dashed', histtype='step')
+n3, bins3, patches3 = plt.hist(x=np.cos(np.array(muon_dict_trig_6string['theta'])*np.pi/180), bins=zbins, label=r"6string triggered", alpha=1.0, edgecolor='blue', linestyle='dashed', histtype='step')
+n4, bins4, patches4 = plt.hist(x=np.cos(np.array(muon_dict_trig_6string_6hit['theta'])*np.pi/180), bins=zbins, label=r"6string 6DOM Trigger", alpha=1.0, edgecolor='green', linestyle='dashed', histtype='step')
+n5, bins5, patches5 = plt.hist(x=np.cos(np.array(muon_dict_trig_6string_ATM['theta'])*np.pi/180), bins=zbins, label=r"6string ATM", alpha=1.0, edgecolor='orange', linestyle='dashed', histtype='step')
 plt.yscale('log')
 plt.ylabel(r"Count")
 plt.xlabel(r"cos(Zenith)")
@@ -243,7 +334,10 @@ plt.savefig('/data/p-one/dghuman/simulation/MCEq_tables/test_plots/Zenith-dist.p
 plt.clf()
 abins = np.linspace(0, 360, 360)
 n, bins, patches = plt.hist(x=np.array(muon_dict['phi']), bins=abins, label=r"Untriggered", alpha=1.0, edgecolor='black', linestyle='solid', histtype='step')
-n2, bins2, patches2 = plt.hist(x=np.array(muon_dict_trig['phi']), bins=abins, label=r"triggered", alpha=1.0, edgecolor='red', linestyle='dashed', histtype='step')
+#n2, bins2, patches2 = plt.hist(x=np.array(muon_dict_trig_6string['phi']), bins=abins, label=r"6 string trigger", alpha=0.5, edgecolor='red', linestyle='dashed', histtype='step')
+n3, bins3, patches3 = plt.hist(x=np.array(muon_dict_trig['phi']), bins=abins, label=r"old trigger", alpha=1.0, edgecolor='blue', linestyle='dashed', histtype='step')
+n4, bins4, patches4 = plt.hist(x=np.array(muon_dict_trig_6string_6hit['phi']), bins=abins, label=r"6 string 6 DOM trigger", alpha=0.5, edgecolor='green', linestyle='-.', histtype='step')
+n5, bins5, patches5 = plt.hist(x=np.array(muon_dict_trig_6string_6hit['phi']), bins=abins, label=r"6 string ATM", alpha=0.5, edgecolor='orange', linestyle='-.', histtype='step')
 plt.yscale('log')
 plt.ylabel(r"Count")
 plt.xlabel(r"Azimuth")
@@ -253,4 +347,17 @@ plt.tight_layout()
 plt.grid(True)
 
 plt.savefig('/data/p-one/dghuman/simulation/MCEq_tables/test_plots/Azimuth-dist.png', dpi=300)
+
+plt.clf()
+n, bins, patches = plt.hist(x=muon_weights_trig['weights'], bins=range(10), label=r"Muon E-Dist", alpha=0.5, edgecolor='red', linestyle='dashed', histtype='step')
+plt.yscale('log')
+plt.ylabel(r"Count")
+plt.xlabel(r"Weight")
+#plt.xscale('log')
+plt.title(r"Weight distribution")
+plt.legend(loc='best',frameon=False,numpoints=1,fontsize='medium')
+plt.tight_layout()
+plt.grid(True)
+
+plt.savefig('/data/p-one/dghuman/simulation/MCEq_tables/test_plots/E-dist_check.png', dpi=300)
 
